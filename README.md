@@ -1,6 +1,8 @@
 # SimpleRetrofitDemo
 简单的Retrofit示例
 
+* Home
+
 * Retrofit是Square公司开发的一款针对Android网络请求的框架，Retrofit2底层基于OkHttp实现的，OkHttp现在已经得到Google官方认可，大量的app都采用OkHttp做网络请求
 
 * 本案例使用的是 `Retrofit2` + `OkHttp3` + `Glide`
