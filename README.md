@@ -6,6 +6,8 @@
 * 本案例使用的是 `Retrofit2` + `OkHttp3` + `Glide`
 
 
+![](https://github.com/IvyZh/SimpleRetrofitDemo/blob/master/cover.png)
+
 * [豆瓣API](https://developers.douban.com/wiki/?title=movie_v2#subject)
 
 * 电影条目信息 https://api.douban.com
