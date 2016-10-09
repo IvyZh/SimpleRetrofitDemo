@@ -1,0 +1,4 @@
+# SimpleRetrofitDemo
+简单的Retrofit示例
+
+Retrofit是Square公司开发的一款针对Android网络请求的框架，Retrofit2底层基于OkHttp实现的，OkHttp现在已经得到Google官方认可，大量的app都采用OkHttp做网络请求
