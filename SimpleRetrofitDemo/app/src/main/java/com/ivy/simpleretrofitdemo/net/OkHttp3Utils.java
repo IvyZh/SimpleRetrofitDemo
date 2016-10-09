@@ -8,8 +8,10 @@ package com.ivy.simpleretrofitdemo.net;
  * http://blog.csdn.net/wlt111111/article/details/51455524
  */
 
+import android.util.Log;
 import android.widget.Toast;
 
+import com.ivy.simpleretrofitdemo.Constant;
 import com.ivy.simpleretrofitdemo.UIUtils;
 import com.ivy.simpleretrofitdemo.base.MyApplication;
 
@@ -26,6 +28,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 
 public class OkHttp3Utils {
@@ -41,14 +44,15 @@ public class OkHttp3Utils {
         if (mOkHttpClient == null) {
             synchronized (OkHttpClient.class) {
                 if (mOkHttpClient == null) {
-//                    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-//                    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                    HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+                    interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
                     mOkHttpClient = new OkHttpClient.Builder()
-                            .cookieJar(new CookiesManager())//设置一个自动管理cookies的管理器
+//                            .cookieJar(new CookiesManager())//设置一个自动管理cookies的管理器
                             .cache(cache)
-//                            .addInterceptor(new MyIntercepter())//添加拦截器
+                            .addInterceptor(interceptor)
+                            .addInterceptor(new TokenIntercepter())//添加Token拦截器
                             //添加网络连接器
 //                            .addNetworkInterceptor(new CookiesInterceptor(MyApplication.getContext()))//让所有网络请求都附上你的拦截器，我这里设置了一个 token 拦截器，就是在所有网络请求的 header 加上 token 参数
                             .retryOnConnectionFailure(true)//方法为设置出现错误进行重新连接。
@@ -61,6 +65,24 @@ public class OkHttp3Utils {
         }
         return mOkHttpClient;
     }
+
+
+    private static class TokenIntercepter implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+
+            Request originalRequest = chain.request();
+            if (Constant.token == null) {
+                return chain.proceed(originalRequest);
+            }
+            Request authorised = originalRequest.newBuilder()
+                    .header("authToken", Constant.token)
+                    .build();
+
+            return chain.proceed(authorised);
+        }
+    }
+
 
     /**
      * 拦截器
@@ -78,10 +100,14 @@ public class OkHttp3Utils {
 
             Response response = chain.proceed(request);
             if (UIUtils.isNetworkConnected()) {
+
+                Log.v("OKHTTP", "add header token");
+
                 int maxAge = 60 * 60; // 有网络时 设置缓存超时时间1个小时
                 response.newBuilder()
                         .removeHeader("Pragma")
                         .header("Cache-Control", "public, max-age=" + maxAge)
+                        .header("myToken", "xxxxxxx123xxxx")
                         .build();
             } else {
                 int maxStale = 60 * 60 * 24 * 28; // 无网络时，设置超时为4周

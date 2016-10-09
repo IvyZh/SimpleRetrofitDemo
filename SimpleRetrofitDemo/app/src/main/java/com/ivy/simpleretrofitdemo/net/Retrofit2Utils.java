@@ -1,5 +1,7 @@
 package com.ivy.simpleretrofitdemo.net;
 
+import com.ivy.simpleretrofitdemo.factory.StringConverterFactory;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -12,10 +14,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public abstract class Retrofit2Utils {
     private static Retrofit mRetrofit = null;
+
     private static String BASE_URL = "https://api.douban.com";
+
     private static OkHttpClient mOkHttpClient;
 
-    public static Retrofit getRetrofit() {
+    protected static Retrofit getRetrofit() {
 
         if (mRetrofit == null) {
             synchronized (Retrofit2Utils.class) {
@@ -25,6 +29,7 @@ public abstract class Retrofit2Utils {
                 if (mRetrofit == null) {
                     mRetrofit = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
+//                            .addConverterFactory(StringConverterFactory.create())
                             .addConverterFactory(GsonConverterFactory.create())
                             .client(mOkHttpClient)
                             .build();
