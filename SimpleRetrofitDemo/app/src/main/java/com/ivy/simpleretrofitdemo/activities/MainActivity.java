@@ -50,21 +50,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void theaters(View v) {
-        Call<MoviesBean> call = NetUtils.getService().getTheatersMovies("上海");
-        call.enqueue(new Callback<MoviesBean>() {
-            @Override
-            public void onResponse(Call<MoviesBean> call, Response<MoviesBean> response) {
-                if (response.isSuccessful()) {
-                    setData(response);
-                }
 
+        Call<String> call = NetUtils.getService().getTheatersMoviesS("上海");
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.v("success", response.body());
             }
 
             @Override
-            public void onFailure(Call<MoviesBean> call, Throwable t) {
-
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.v("fail", t.getMessage());
             }
         });
+
+//        Call<MoviesBean> call = NetUtils.getService().getTheatersMovies("上海");
+//        call.enqueue(new Callback<MoviesBean>() {
+//            @Override
+//            public void onResponse(Call<MoviesBean> call, Response<MoviesBean> response) {
+//                if (response.isSuccessful()) {
+//                    setData(response);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MoviesBean> call, Throwable t) {
+//
+//            }
+//        });
+
+
     }
 
     private void setData(Response<MoviesBean> response) {

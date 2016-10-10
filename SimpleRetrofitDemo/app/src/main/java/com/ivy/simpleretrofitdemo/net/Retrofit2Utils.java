@@ -29,7 +29,7 @@ public abstract class Retrofit2Utils {
                 if (mRetrofit == null) {
                     mRetrofit = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
-//                            .addConverterFactory(StringConverterFactory.create())
+                            .addConverterFactory(StringConverterFactory.create())
                             .addConverterFactory(GsonConverterFactory.create())
                             .client(mOkHttpClient)
                             .build();
